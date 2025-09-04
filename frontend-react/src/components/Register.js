@@ -18,7 +18,7 @@ function Register({ onRegisterSuccess }) {
     const [error, setError] = useState('');
     const API_URL = process.env.REACT_APP_API_URL;
 
-    const handleSubmit = async (event) => {
+      const handleSubmit = async (event) => {
     event.preventDefault();
     setError('');
 
@@ -29,22 +29,23 @@ function Register({ onRegisterSuccess }) {
         body: JSON.stringify({ email, password })
       });
 
-      // Если ответ НЕ успешный (например, 400 - email уже занят)
       if (!response.ok) {
-        // Пытаемся прочитать ошибку в формате JSON
-        const errorData = await response.json();
-        // Выкидываем ошибку с текстом от сервера
-        throw new Error(errorData.detail || 'Произошла неизвестная ошибка');
+        // Если ответ НЕ успешный...
+        try {
+          // ...сначала ПЫТАЕМСЯ прочитать тело как JSON
+          const errorData = await response.json();
+          throw new Error(errorData.detail || 'Произошла ошибка');
+        } catch (jsonError) {
+          // ...но если это НЕ УДАЛОСЬ (тело пустое),
+          // то выкидываем ОБЩУЮ ошибку
+          throw new Error(`Ошибка ${response.status}: Email уже занят или неверные данные`);
+        }
       }
 
-      // Если ответ УСПЕШНЫЙ (201 Created), нам не нужно читать его тело,
-      // так как оно может быть пустым. Сам факт успеха - это все, что нам нужно.
-      // Мы просто вызываем родительскую функцию, передав ей email, который мы и так знаем.
+      // Если ответ УСПЕШНЫЙ
       onRegisterSuccess({ email: email });
 
     } catch (err) {
-      // Ловим любую ошибку (сетевую или ту, что мы выкинули выше)
-      // и показываем ее пользователю.
       setError(err.message);
     }
   };

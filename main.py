@@ -8,6 +8,8 @@ from fastapi.security import OAuth2PasswordRequestForm
 # --- Сначала импортируем компоненты БД ---
 from database import engine, SessionLocal, Base, get_db
 from typing import List
+from fastapi.responses import JSONResponse
+from fastapi.exceptions import RequestValidationError
 # --- Затем импортируем модели ---
 # Это важно, чтобы SQLAlchemy "узнал" о наших таблицах перед их созданием
 import models
@@ -21,7 +23,12 @@ import security
 
 
 app = FastAPI()
-
+@app.exception_handler(RequestValidationError)
+async def validation_exception_handler(request, exc):
+    return JSONResponse(
+        status_code=422,
+        content={"detail": "Validation Error: " + str(exc)},
+    )
 # --- НАСТРОЙКА CORS ---
 # Это "белый список" адресов, которым разрешено обращаться к нашему API
 origins = [
