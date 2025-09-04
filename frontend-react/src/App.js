@@ -1,8 +1,10 @@
 // src/App.js
 import React, { useState, useEffect } from 'react';
 import Login from './components/Login';
+import AuthPage from './components/AuthPage';
 import Dashboard from './components/Dashboard';
 import { Box } from '@chakra-ui/react';
+
 
 function App() {
   const [token, setToken] = useState(null);
@@ -29,7 +31,7 @@ function App() {
       {token ? (
         <Dashboard token={token} onLogout={handleLogout} />
       ) : (
-        <Login onLoginSuccess={handleLoginSuccess} />
+        <AuthPage onLoginSuccess={handleLoginSuccess} />
       )}
     </Box>
   );
