@@ -7,10 +7,10 @@ import { Box, Button, Text } from '@chakra-ui/react';
 function AuthPage({ onLoginSuccess }) {
   const [showLogin, setShowLogin] = useState(true);
 
-  const handleRegisterSuccess = (user) => {
+  const handleRegisterSuccess = (user) => { // user будет { email: '...' }
     alert(`Пользователь ${user.email} успешно зарегистрирован! Теперь вы можете войти.`);
-    setShowLogin(true); // Переключаем обратно на форму входа
-  };
+    setShowLogin(true);
+};
 
   return (
     <Box>

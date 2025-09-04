@@ -19,26 +19,32 @@ function Register({ onRegisterSuccess }) {
     const API_URL = process.env.REACT_APP_API_URL;
 
     const handleSubmit = async (event) => {
-        event.preventDefault();
-        setError('');
-        try {
-      // 2. Меняем URL на /users/
+    event.preventDefault();
+    setError('');
+
+    try {
       const response = await fetch(`${API_URL}/users/`, {
         method: 'POST',
-        // ВАЖНО: для регистрации мы отправляем JSON, а не form-data
-        headers: { 'Content-Type': 'application/json' }, 
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password })
       });
 
+      // Если ответ НЕ успешный (например, 400 - email уже занят)
       if (!response.ok) {
-        const errData = await response.json();
-        throw new Error(errData.detail || 'Ошибка регистрации');
+        // Пытаемся прочитать ошибку в формате JSON
+        const errorData = await response.json();
+        // Выкидываем ошибку с текстом от сервера
+        throw new Error(errorData.detail || 'Произошла неизвестная ошибка');
       }
 
-      const data = await response.json();
-      // 3. Вызываем новую пропсу
-      onRegisterSuccess(data); 
+      // Если ответ УСПЕШНЫЙ (201 Created), нам не нужно читать его тело,
+      // так как оно может быть пустым. Сам факт успеха - это все, что нам нужно.
+      // Мы просто вызываем родительскую функцию, передав ей email, который мы и так знаем.
+      onRegisterSuccess({ email: email });
+
     } catch (err) {
+      // Ловим любую ошибку (сетевую или ту, что мы выкинули выше)
+      // и показываем ее пользователю.
       setError(err.message);
     }
   };
