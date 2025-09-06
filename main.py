@@ -35,7 +35,7 @@ origins = [
     "http://localhost",
     "http://localhost:8080",
     "http://localhost:3000",
-    "@https://finance-tracker-app-two-omega.vercel.app/",
+    "https://finance-tracker-app-two-omega.vercel.app",
     # Важно для открытия файла index.html напрямую в браузере
     "null", 
 ]

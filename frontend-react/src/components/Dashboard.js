@@ -30,7 +30,7 @@ import {
 import { MdReceipt } from 'react-icons/md';
 import { FaTrash, FaEdit } from 'react-icons/fa';
 
-const API_URL = 'http://127.0.0.1:8000';
+const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:8000';
 
 function Dashboard({ token, onLogout }) {
   const [expenses, setExpenses] = useState([]);
