@@ -32,20 +32,17 @@ async def validation_exception_handler(request, exc):
 # --- НАСТРОЙКА CORS ---
 # Это "белый список" адресов, которым разрешено обращаться к нашему API
 origins = [
-    "http://localhost",
-    "http://localhost:8080",
     "http://localhost:3000",
-    "https://finance-tracker-app-two-omega.vercel.app",
-    # Важно для открытия файла index.html напрямую в браузере
-    "null", 
+    "https://finance-tracker-detpr4goq-artems-projects-e1cb07ec.vercel.app", # ТВОЯ ССЫЛКА С VERCEL
+    "*" # ВРЕМЕННО РАЗРЕШАЕМ ВСЕ ИСТОЧНИКИ
 ]
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins, # Разрешаем эти источники
+    allow_origins=origins,
     allow_credentials=True,
-    allow_methods=["*"], # Разрешаем все методы (GET, POST, и т.д.)
-    allow_headers=["*"], # Разрешаем все заголовки
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
 # ... остальной код твоего приложения ...
