@@ -30,7 +30,7 @@ import {
 import { MdReceipt } from 'react-icons/md';
 import { FaTrash, FaEdit } from 'react-icons/fa';
 
-const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:8000';
+const API_URL = 'https://finance-tracker-app-production-e5ce.up.railway.app';
 console.log("LOGIN COMPONENT USING API URL:", API_URL);
 
 function Dashboard({ token, onLogout }) {
