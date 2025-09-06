@@ -27,8 +27,8 @@ function Login({ onLoginSuccess }) {
         try {
             const response = await fetch(`${API_URL}/login`, {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                body: new URLSearchParams({ 'username': email, 'password': password })
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email: email, password: password })
             });
             if (!response.ok) { throw new Error('Неверный email или пароль'); }
             const data = await response.json();

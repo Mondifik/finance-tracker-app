@@ -69,20 +69,19 @@ def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
 # ... код эндпоинта create_user ...
 
 # --- Эндпоинт для логина и получения токена ---
+# main.py
+
 @app.post("/login", response_model=schemas.Token)
-def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)):
-    # Теперь мы берем email из form_data.username (Swagger использует это поле для email)
-    user = db.query(models.User).filter(models.User.email == form_data.username).first()
+def login_for_access_token(user_credentials: schemas.UserCreate, db: Session = Depends(get_db)):
+    user = db.query(models.User).filter(models.User.email == user_credentials.email).first()
     
-    # А пароль из form_data.password
-    if not user or not security.verify_password(form_data.password, user.hashed_password):
+    if not user or not security.verify_password(user_credentials.password, user.hashed_password):
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Incorrect email or password",
             headers={"WWW-Authenticate": "Bearer"},
         )
     
-    # Дальше все по-старому
     access_token_expires = timedelta(minutes=security.ACCESS_TOKEN_EXPIRE_MINUTES)
     access_token = security.create_access_token(
         data={"sub": user.email}, expires_delta=access_token_expires
