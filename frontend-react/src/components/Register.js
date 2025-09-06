@@ -1,4 +1,3 @@
-// src/components/Login.js
 import React, { useState } from 'react';
 import {
   Box,
@@ -12,13 +11,16 @@ import {
   VStack
 } from '@chakra-ui/react'; 
 
+const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:8000';
+console.log("LOGIN COMPONENT USING API URL:", API_URL);
+
 function Register({ onRegisterSuccess }) {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
-    const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:8000';
 
-      const handleSubmit = async (event) => {
+
+    const handleSubmit = async (event) => {
     event.preventDefault();
     setError('');
 
